@@ -1,8 +1,12 @@
 FROM registry.access.redhat.com/ubi8/openjdk-8
-USER jboss
-WORKDIR /tmp/src/
+RUN echo "$(pwd)"
+WORKDIR /apps
 COPY --chown=jboss:jboss pom.xml pom.xml
 COPY --chown=jboss:jboss src src
+USER root
+COPY ./ /tmp/src
+RUN chown -R jboss:root /tmp/src
+USER jboss
 RUN echo "$(pwd)"
 RUN ls -altr /usr/local/s2i/assemble
 RUN /usr/local/s2i/assemble
